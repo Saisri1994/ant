@@ -1,5 +1,4 @@
-
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <project name="AntExample1" default="war" basedir=".">
 
         <path id="compile.classpath">
