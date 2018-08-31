@@ -1,6 +1,6 @@
 
 <?xml version="1.0" ?>
-<project name="AntExample1" default="war" basedir="." xmlns:sonar="antlib:org.sonar.ant">
+<project name="AntExample1" default="war" basedir=".">
 
         <path id="compile.classpath">
                 <fileset dir="WebContent/WEB-INF/lib">
@@ -18,37 +18,12 @@
                         <classpath refid="compile.classpath" />
                 </javac>
         </target>
-
-        <!-- Define the SonarQube global properties (the most usual way is to pass these properties via the command line) -->
-        <property name="sonar.host.url" value="http://10.75.8.131:9000" />
-        <!-- Define the Sonar properties -->
-        <property name="sonar.projectKey" value="9bc89a6e0d659c33ef4b61b27dc486b1f9075241" />
-        <property name="sonar.projectName" value="9bc89a6e0d659c33ef4b61b27dc486b1f9075241" />
-        <property name="sonar.projectVersion" value="1.0" />
-        <property name="sonar.language" value="java" />
-        <property name="sonar.sources" value="src" />
-        <!--property name="sonar.binaries" value="build/classes" /-->
-        <property name="sonar.java.binaries" value="build/classes" />
-        <property name="sonar.sourceEncoding" value="UTF-8" />
-        <!--End of sonar properties definition-->
-
-        <!--target name="compile" depends="init" >
-                <javac destdir="build/classes" debug="true" srcdir="src" includeantruntime="false">
-                        <classpath refid="compile.classpath"/>
-                </javac>
-        </target-->
-
-        <!-- ========= Define SonarQube Scanner for Ant Target ========= -->
-        <target name="sonar" depends="compile">
-                <taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml">
-                        <!-- Update the following line, or put the "sonar-ant-task-*.jar" file in your "$HOME/.ant/lib" folder -->
-                        <classpath path="/opt/ant/apache-ant-1.10.5/lib/sonarqube-ant-task-2.5.jar" />
-                </taskdef>
-
-                <!-- Execute SonarQube Scanner for Ant Analysis -->
-                <sonar:sonar />
+        <target name="testng" depends="compile">
+            <testng classpathref="test.path" outputdir="reports" haltonfailure="true">
+                    <classpath location="build/classes"/>
+                    <xmlfileset dir="." includes="testng.xml"/>
+                </testng>
         </target>
-
         <target name="war" depends="compile">
                 <war destfile="dist/AntExample.war" webxml="WebContent/WEB-INF/web.xml">
                         <fileset dir="WebContent"/>
@@ -56,6 +31,10 @@
                         <classes dir="build/classes"/>
                 </war>
         </target>
+        <target name="doc" depends="init" description="documentation">
+                <javadoc sourcepath ="src" destdir="docs"/>
+         </target>
+        
 
         <!--target name="clean">
                 <delete dir="dist" />
