@@ -1,43 +1,53 @@
-<?xml version="1.0"?>
-<project name="AntExample1" default="war" basedir=".">
+<?xml version="1.0" ?>
+<project name="xxxx" default="war" basedir=".">
+	<property name="testng.xml.file" value="testng.xml" />
+	<property name="basedir" location="." />
+	<property name="src" location="${basedir}/src" />
+	<property name="lib" location="${basedir}/WebContent/WEB-INF/lib" />
+	<property name="bin" location="${basedir}/target/classes" />
+	<property name="war-file" location="${basedir}/dist" />
+	<property name="test-reports" location="${basedir}/test-reports" />
+	
+	<path id="compile.classpath">
+		<fileset dir="${lib}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
 
-        <path id="compile.classpath">
-                <fileset dir="WebContent/WEB-INF/lib">
-                        <include name="*.jar"/>
-                </fileset>
-        </path>
+	<taskdef name="testng" classname="org.testng.TestNGAntTask" classpathref="compile.classpath" />
+	
+	<!--target name="del">
+		<delete dir="${war-file}" />
+		<delete dir="${test-reports}" />
+	</target-->
+	
+	<target name="init">
+		<mkdir dir="${bin}" />
+		<mkdir dir="${war-file}" />
+		<mkdir dir="${test-reports}" />
+	</target>
 
-        <target name="init">
-                <mkdir dir="build/classes"/>
-                <mkdir dir="dist"/>
-        </target>
+	<target name="compile" depends="init">
+		<javac srcdir="${src}" destdir="${bin}" classpathref="compile.classpath" includeantruntime="false" />
+	</target>
 
-        <target name="compile" depends="init">
-                <javac destdir="build/classes" debug="true" srcdir="src" includeantruntime="false">
-                        <classpath refid="compile.classpath" />
-                </javac>
-        </target>
-        <target name="testng" depends="compile">
-            <testng classpathref="test.path" outputdir="reports" haltonfailure="true">
-                    <classpath location="build/classes"/>
-                    <xmlfileset dir="." includes="testng.xml"/>
-                </testng>
-        </target>
-        <target name="war" depends="compile">
-                <war destfile="dist/AntExample.war" webxml="WebContent/WEB-INF/web.xml">
-                        <fileset dir="WebContent"/>
-                        <lib dir="WebContent/WEB-INF/lib"/>
-                        <classes dir="build/classes"/>
-                </war>
-        </target>
-        <target name="doc" depends="init" description="documentation">
-                <javadoc sourcepath ="src" destdir="docs"/>
-         </target>
-        
+	<target name="tests" depends="compile">
+		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml" classpathref="compile.classpath"/>
+		<jacoco:coverage destfile="${basedir}/target/jacoco.exec" xmlns:jacoco="antlib:org.jacoco.ant">
+			<testng outputdir="${test-reports}" classpathref="compile.classpath" haltOnFailure="true">
+				<classpath location="${bin}" />
+				<xmlfileset dir="${basedir}" includes="${testng.xml.file}" />
+			</testng>
+		</jacoco:coverage>
+	</target>
 
-        <!--target name="clean">
-                <delete dir="dist" />
-                <delete dir="build" />
-        </target-->
 
+	<target name="war" depends="compile">
+		<war destfile="${war-file}/Anty.war" webxml="${basedir}/WebContent/WEB-INF/web.xml">
+			<fileset dir="${basedir}/WebContent" />
+			<lib dir="${lib}" />
+			<classes dir="${bin}" />
+		</war>
+	</target>
+		
 </project>
