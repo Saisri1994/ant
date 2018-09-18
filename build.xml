@@ -14,7 +14,7 @@
 		</fileset>
 	</path>
 
-	<taskdef name="testng" classname="org.testng.TestNGAntTask" classpathref="compile.classpath" />
+	
 	
 	<!--target name="del">
 		<delete dir="${war-file}" />
@@ -22,23 +22,22 @@
 	</target-->
 	
 	<target name="init">
+		<mkdir dir="${build}">
 		<mkdir dir="${bin}" />
 		<mkdir dir="${war-file}" />
 		<mkdir dir="${test-reports}" />
 	</target>
 
 	<target name="compile" depends="init">
-		<javac srcdir="${src}" destdir="${bin}" classpathref="compile.classpath" includeantruntime="false" />
+		<javac destdir="${build}" debug="true" srcdir=${src} classpathref="compile.classpath" includeantruntime="false" />
 	</target>
-
+        <taskdef name="testng" classname="org.testng.TestNGAntTask" classpathref="compile.classpath" />
 	<target name="tests" depends="compile">
-		<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml" classpathref="compile.classpath"/>
-		<jacoco:coverage destfile="${basedir}/target/jacoco.exec" xmlns:jacoco="antlib:org.jacoco.ant">
+	<target name="tests" depends="compile">
 			<testng outputdir="${test-reports}" classpathref="compile.classpath" haltOnFailure="true">
-				<classpath location="${bin}" />
+				<classpath location="${build}" />
 				<xmlfileset dir="${basedir}" includes="${testng.xml.file}" />
 			</testng>
-		</jacoco:coverage>
 	</target>
 
 
@@ -49,5 +48,6 @@
 			<classes dir="${bin}" />
 		</war>
 	</target>
+	<target name="all" depends="init,compile,tests,war" >
 		
 </project>
