@@ -19,7 +19,7 @@
 	</target-->
 	
 	<target name="init">
-		<mkdir dir="${build}">
+		<mkdir dir="${build}" />
 		<mkdir dir="${bin}" />
 		<mkdir dir="${war-file}" />
 		<mkdir dir="${test-reports}" />
