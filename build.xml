@@ -10,16 +10,11 @@
 			<include name="*.jar" />
 		</fileset>
 	</path>
-
-	
-	
 	<target name="del">
 		<delete dir="${war-file}" />
 		<delete dir="${build}" />
-		<delete dir="${bin}"/>
-		
+		<delete dir="${bin}"/>	
 	</target>
-	
 	<target name="init">
 		<mkdir dir="${build}" />
 		<mkdir dir="${bin}" />
