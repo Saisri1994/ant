@@ -33,5 +33,6 @@
 		</war>
 	</target>
 	<target name="all" depends="init,compile,war" >
+	</target>
 		
 </project>
