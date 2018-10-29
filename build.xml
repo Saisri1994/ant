@@ -26,7 +26,7 @@
 	</target>
 
 	<target name="compile" depends="init">
-		<javac destdir="${build}" debug="true" srcdir=${src} classpathref="compile.classpath" includeantruntime="false" />
+		<javac destdir="${build}" debug="true" srcdir="${src}" classpathref="compile.classpath" includeantruntime="false" />
 	</target>
 	<target name="war" depends="compile">
 		<war destfile="${war-file}/Anty.war" webxml="${basedir}/WebContent/WEB-INF/web.xml">
