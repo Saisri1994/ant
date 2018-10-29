@@ -13,10 +13,12 @@
 
 	
 	
-	<!--target name="del">
+	<target name="del">
 		<delete dir="${war-file}" />
-		<delete dir="${test-reports}" />
-	</target-->
+		<delete dir="${build}" />
+		<delete dir="${bin}"/>
+		
+	</target>
 	
 	<target name="init">
 		<mkdir dir="${build}" />
