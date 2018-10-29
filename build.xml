@@ -1,12 +1,9 @@
 <?xml version="1.0" ?>
-<project name="UserRegistrationAnt" default="war" basedir=". xmlns:sonar="antlib:org.sonar.ant>
-	<property name="testng.xml.file" value="testng.xml" />
+<project name="UserRegistrationAnt" default="war" basedir=". xmlns:sonar="antlib:org.sonar.ant">
 	<property name="basedir" location="." />
 	<property name="src" location="${basedir}/src" />
 	<property name="lib" location="${basedir}/WebContent/WEB-INF/lib" />
-	<property name="bin" location="${basedir}/target/classes" />
 	<property name="war-file" location="${basedir}/dist" />
-	<property name="test-reports" location="${basedir}/test-reports" />
 	
 	<path id="compile.classpath">
 		<fileset dir="${lib}">
@@ -31,16 +28,6 @@
 	<target name="compile" depends="init">
 		<javac destdir="${build}" debug="true" srcdir=${src} classpathref="compile.classpath" includeantruntime="false" />
 	</target>
-        <taskdef name="testng" classname="org.testng.TestNGAntTask" classpathref="compile.classpath" />
-	<target name="tests" depends="compile">
-	<target name="tests" depends="compile">
-			<testng outputdir="${test-reports}" classpathref="compile.classpath" haltOnFailure="true">
-				<classpath location="${build}" />
-				<xmlfileset dir="${basedir}" includes="${testng.xml.file}" />
-			</testng>
-	</target>
-
-
 	<target name="war" depends="compile">
 		<war destfile="${war-file}/Anty.war" webxml="${basedir}/WebContent/WEB-INF/web.xml">
 			<fileset dir="${basedir}/WebContent" />
@@ -48,6 +35,6 @@
 			<classes dir="${bin}" />
 		</war>
 	</target>
-	<target name="all" depends="init,compile,tests,war" >
+	<target name="all" depends="init,compile,war" >
 		
 </project>
